@@ -1,0 +1,26 @@
+{
+  "words": [
+    { "id": 1, "word": "CRICKETER" },
+    { "id": 2, "word": "TELEPHONE" },
+    { "id": 3, "word": "MARMALADE" },
+    { "id": 4, "word": "UMBRELLAS" },
+    { "id": 5, "word": "POSTBOXES" },
+    { "id": 6, "word": "ALLOTMENT" },
+    { "id": 7, "word": "STAIRCASE" },
+    { "id": 8, "word": "HEDGEROWS" },
+    { "id": 9, "word": "VILLAGERS" },
+    { "id": 10, "word": "TOWNHOUSE" },
+    { "id": 11, "word": "DRIZZLING" },
+    { "id": 12, "word": "BREAKFAST" },
+    { "id": 13, "word": "CATHEDRAL" },
+    { "id": 14, "word": "FOOTPATHS" },
+    { "id": 15, "word": "NEWSPAPER" },
+    { "id": 16, "word": "FIREPLACE" },
+    { "id": 17, "word": "RAINDROPS" },
+    { "id": 18, "word": "LIGHTNING" },
+    { "id": 19, "word": "BOOKSHELF" },
+    { "id": 20, "word": "FLOWERPOT" },
+    { "id": 21, "word": "SCARECROW" },
+    { "id": 22, "word": "HAYSTACKS" }
+  ]
+}

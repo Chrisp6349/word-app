@@ -1,0 +1,17 @@
+export const colors = {
+  red: '#C8102E',
+  blue: '#012169',
+  white: '#FFFFFF',
+  background: '#F5F6FA',
+  surface: '#FFFFFF',
+  text: '#0B1440',
+  textMuted: '#5B6178',
+  tileBackground: '#012169',
+  tileText: '#FFFFFF',
+  tileUsed: '#C7CBDA',
+  slotEmpty: '#E3E6F0',
+  slotBorder: '#012169',
+  hint: '#C8102E',
+  success: '#1E7B45',
+  error: '#C8102E',
+};
