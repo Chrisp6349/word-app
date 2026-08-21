@@ -41,7 +41,7 @@ export function HomeScreen() {
   const [puzzle] = useState(() => getTodaysPuzzle());
   const [tiles, setTiles] = useState<Tile[]>(() => createTiles(puzzle.letters));
   const [slots, setSlots] = useState<GuessSlot[]>(() =>
-    createEmptySlots(puzzle.entry.word.length)
+    createEmptySlots(puzzle.entry.answer.length)
   );
   const [phase, setPhase] = useState<Phase>('loading');
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -109,7 +109,7 @@ export function HomeScreen() {
 
   function handleHint() {
     if (phase !== 'playing') return;
-    const result = applyHint(tiles, slots, puzzle.entry.word);
+    const result = applyHint(tiles, slots, puzzle.entry.answer);
     if (!result) return;
     setTiles(result.tiles);
     setSlots(result.slots);
@@ -124,7 +124,7 @@ export function HomeScreen() {
   async function handleSubmit() {
     if (phase !== 'playing' || !isRowFull(slots)) return;
     const word = guessWord(slots);
-    if (word !== puzzle.entry.word) {
+    if (word !== puzzle.entry.answer) {
       setErrorMessage("Not quite right — keep trying!");
       return;
     }
@@ -170,7 +170,7 @@ export function HomeScreen() {
   }
 
   const hintedPositionsForShare = Array.from(
-    { length: puzzle.entry.word.length },
+    { length: puzzle.entry.answer.length },
     (_, i) => i < hintsUsed
   );
 
@@ -187,6 +187,11 @@ export function HomeScreen() {
         {phase === 'playing' && (
           <>
             <Text style={styles.timer}>{formatTime(elapsedSeconds)}</Text>
+
+            <View style={styles.clueRow}>
+              <Text style={styles.clueText}>Clue: {puzzle.entry.definition}</Text>
+              <Text style={styles.difficultyText}>{puzzle.entry.difficulty}</Text>
+            </View>
 
             <GuessRow slots={slots} onRemoveLast={handleRemoveLast} />
 
@@ -294,6 +299,24 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginBottom: 16,
     fontVariant: ['tabular-nums'],
+  },
+  clueRow: {
+    alignItems: 'center',
+    marginBottom: 18,
+    paddingHorizontal: 12,
+  },
+  clueText: {
+    fontSize: 15,
+    color: colors.text,
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
+  difficultyText: {
+    fontSize: 12,
+    color: colors.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginTop: 4,
   },
   error: {
     color: colors.error,
