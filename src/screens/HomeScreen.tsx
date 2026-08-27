@@ -34,6 +34,7 @@ import { GuessRow } from '../components/GuessRow';
 import { ShareCard } from '../components/ShareCard';
 
 const HINT_PENALTY_SECONDS = 15;
+const CLUE_PENALTY_SECONDS = 20;
 
 type Phase = 'loading' | 'playing' | 'solved';
 
@@ -52,6 +53,7 @@ export function HomeScreen() {
     lastSolvedDateKey: null,
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [clueRevealed, setClueRevealed] = useState(false);
   const [alreadySolvedToday, setAlreadySolvedToday] = useState(false);
   const [savedResult, setSavedResult] = useState<DailyResult | null>(null);
 
@@ -115,6 +117,16 @@ export function HomeScreen() {
     setSlots(result.slots);
     setHintsUsed((h) => h + 1);
     penaltySecondsRef.current += HINT_PENALTY_SECONDS;
+    if (startTimeRef.current !== null) {
+      const secondsElapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+      setElapsedSeconds(secondsElapsed + penaltySecondsRef.current);
+    }
+  }
+
+  function handleRevealClue() {
+    if (phase !== 'playing' || clueRevealed) return;
+    setClueRevealed(true);
+    penaltySecondsRef.current += CLUE_PENALTY_SECONDS;
     if (startTimeRef.current !== null) {
       const secondsElapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
       setElapsedSeconds(secondsElapsed + penaltySecondsRef.current);
@@ -189,8 +201,18 @@ export function HomeScreen() {
             <Text style={styles.timer}>{formatTime(elapsedSeconds)}</Text>
 
             <View style={styles.clueRow}>
-              <Text style={styles.clueText}>Clue: {puzzle.entry.definition}</Text>
-              <Text style={styles.difficultyText}>{puzzle.entry.difficulty}</Text>
+              {clueRevealed ? (
+                <>
+                  <Text style={styles.clueText}>Clue: {puzzle.entry.definition}</Text>
+                  <Text style={styles.difficultyText}>{puzzle.entry.difficulty}</Text>
+                </>
+              ) : (
+                <Pressable onPress={handleRevealClue}>
+                  <Text style={styles.clueRevealText}>
+                    Reveal clue (+{CLUE_PENALTY_SECONDS}s)
+                  </Text>
+                </Pressable>
+              )}
             </View>
 
             <GuessRow slots={slots} onRemoveLast={handleRemoveLast} />
@@ -317,6 +339,12 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginTop: 4,
+  },
+  clueRevealText: {
+    fontSize: 14,
+    color: colors.red,
+    fontWeight: '600',
+    textDecorationLine: 'underline',
   },
   error: {
     color: colors.error,
